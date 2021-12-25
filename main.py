@@ -15,18 +15,14 @@ def draw_text(surface, text, size, x, y):
 
 
 def end_of_screen():
-    if snake.snake_size[0][0] == 0:
-        snake.snake_size[0] = (600, snake.snake_size[0][1])
-    elif snake.snake_size[0][0] == 600:
-        snake.snake_size[0] = (0, snake.snake_size[0][1])
-    elif snake.snake_size[0][1] == 0:
-        snake.snake_size[0] = (snake.snake_size[0][0], 600)
-    elif snake.snake_size[0][1] == 600:
-        snake.snake_size[0] = (snake.snake_size[0][0], 0)
+    if snake.snake_size[0][0] == 0 or snake.snake_size[0][0] == 600 or snake.snake_size[0][1] == 0 or snake.snake_size[0][1] == 600:
+        menu.show_menu_lose()
 
 
 def start_the_game():
     my_direction = LEFT
+    change_dir = my_direction
+
     health = 3
     frame_rate = 15
     player = Player(menu.get_player_name())
@@ -38,13 +34,22 @@ def start_the_game():
                 sys.exit()
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_UP:
-                    my_direction = UP
+                    change_dir = UP
                 elif event.key == pygame.K_DOWN:
-                    my_direction = DOWN
+                    change_dir = DOWN
                 elif event.key == pygame.K_RIGHT:
-                    my_direction = RIGHT
+                    change_dir = RIGHT
                 elif event.key == pygame.K_LEFT:
-                    my_direction = LEFT
+                    change_dir = LEFT
+
+        if change_dir == UP and my_direction != DOWN:
+            my_direction = UP
+        if change_dir == DOWN and my_direction != UP:
+            my_direction = DOWN
+        if change_dir == LEFT and my_direction != RIGHT:
+            my_direction = LEFT
+        if change_dir == RIGHT and my_direction != LEFT:
+            my_direction = RIGHT
 
         if my_direction == UP:
             snake.move_up()
